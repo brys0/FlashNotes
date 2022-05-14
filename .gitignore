@@ -1,51 +1,28 @@
-# Ignore list for Eagle, a PCB layout tool
+# Logs
+packages/flash_notes-web/logs
+packages/flash_notes-web/*.log
+packages/flash_notes-web/npm-debug.log*
+packages/flash_notes-web/yarn-debug.log*
+packages/flash_notes-web/yarn-error.log*
+packages/flash_notes-web/pnpm-debug.log*
+packages/flash_notes-web/lerna-debug.log*
 
-# Backup files
-*.s#?
-*.b#?
-*.l#?
-*.b$?
-*.s$?
-*.l$?
+packages/flash_notes-web/node_modules
+packages/flash_notes-web/dist
+packages/flash_notes-web/dist-ssr
+packages/flash_notes-web/*.local
 
-# Eagle project file
-# It contains a serial number and references to the file structure
-# on your computer.
-# comment the following line if you want to have your project file included.
-eagle.epf
+# Editor directories and files
+packages/flash_notes-web/.vscode/*
+packages/flash_notes-web/!.vscode/extensions.json
+packages/flash_notes-web/.idea
+packages/flash_notes-web/.DS_Store
+packages/flash_notes-web/*.suo
+packages/flash_notes-web/*.ntvs*
+packages/flash_notes-web/*.njsproj
+packages/flash_notes-web/*.sln
+packages/flash_notes-web/*.sw?
 
-# Autorouter files
-*.pro
-*.job
+packages/flash_notes-SERV-auth/node_modules
+packages/flash_notes-SERV-auth/pnpm-lock.yaml
 
-# CAM files
-*.$$$
-*.cmp
-*.ly2
-*.l15
-*.sol
-*.plc
-*.stc
-*.sts
-*.crc
-*.crs
-
-*.dri
-*.drl
-*.gpi
-*.pls
-*.ger
-*.xln
-
-*.drd
-*.drd.*
-
-*.s#*
-*.b#*
-
-*.info
-
-*.eps
-
-# file locks introduced since 7.x
-*.lck
