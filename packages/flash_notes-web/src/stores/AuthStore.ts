@@ -21,5 +21,6 @@ export type Nullable<T> = T | null;
 export interface IUser {
     name: string;
     email: string;
-    avatar: string;
+    auth: string;
+    id: string;
 } 

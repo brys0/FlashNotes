@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import AppHeader from './components/layout/AppHeader.vue';
+import { useCardStore } from './stores/CardStore';
 </script>
 
 <template>
   <NConfigProvider :theme="darkTheme">
     <NDialogProvider>
       <AppHeader />
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component }" class="currentpage">
         <transition name="fade">
           <component :is="Component" />
         </transition>
@@ -26,6 +27,7 @@ export default defineComponent({
     }
   },
   mounted() {
+    useCardStore().getAllTags();
     console.log(import.meta.env.VITE_CLIENT_ID);
   },
   components: { NConfigProvider }
@@ -39,7 +41,8 @@ export default defineComponent({
   --appbg: #101014;
   --headerbg: #0a0a0a;
   --green: #63e2b7;
-
+  --shadow-color: #9ed8ff;
+  --shadow-color-light: white;
   &[theme="dark"] {
     --appbg: #101014;
     --headerbg: #0a0a0a;
@@ -106,5 +109,25 @@ body {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+@keyframes neon {
+  0% {
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
+    0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light),
+    0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
+  }
+  50% {
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
+    0 0 5px var(--shadow-color-light), 0 0 15px var(--shadow-color-light), 0 0 25px var(--shadow-color-light),
+    0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color), 0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color), 0 0 210px var(--shadow-color);
+  }
+  100% {
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
+    0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light),
+    0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
+  }
+}
+.currentpage {
+  height: calc(100vh - 46.4px);
 }
 </style>

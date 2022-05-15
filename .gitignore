@@ -22,7 +22,9 @@ packages/flash_notes-web/*.ntvs*
 packages/flash_notes-web/*.njsproj
 packages/flash_notes-web/*.sln
 packages/flash_notes-web/*.sw?
-
+packages/flash_notes-SERV-api/.idea
+packages/flash_notes-SERV-api/.gradle
+packages/flash_notes-SERV-api/build
 packages/flash_notes-SERV-auth/node_modules
 packages/flash_notes-SERV-auth/pnpm-lock.yaml
 

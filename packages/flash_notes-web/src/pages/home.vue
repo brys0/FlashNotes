@@ -24,11 +24,11 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 54px);
+    height: 100%;
 }
-@media screen and (max-width: 1022px) {
-   .__center {
-       justify-content: flex-start;
-   }
-}
+// @media screen and (max-width: 1022px) {
+//    .__center {
+//        justify-content: flex-start;
+//    }
+// }
 </style>
