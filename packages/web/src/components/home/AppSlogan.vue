@@ -32,13 +32,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Transition } from "vue";
-import { NButton, NIcon } from "naive-ui";
-import { ArrowUpCircleOutline as ArrowUp, PersonRemoveOutline as RemoveIcon, Search as SearchIcon } from "@vicons/ionicons5";
+import { computed, defineComponent, defineAsyncComponent } from "vue";
 import { useAuthStore } from "../../stores/AuthStore";
+import { NIcon } from "naive-ui";
 export default defineComponent({
   name: "AppSlogan",
-  components: { NButton, ArrowUp, NIcon, RemoveIcon, Transition, SearchIcon },
+  components: { 
+    NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")),
+    ArrowUp: defineAsyncComponent(() => import("@vicons/ionicons5/ArrowUp")), 
+    NIcon,
+    RemoveIcon: defineAsyncComponent(() => import("@vicons/ionicons5/PersonRemoveOutline")),  
+    SearchIcon: defineAsyncComponent(() => import("@vicons/ionicons5/Search"))
+    },
   setup() {
     let authStore = useAuthStore();
     return {

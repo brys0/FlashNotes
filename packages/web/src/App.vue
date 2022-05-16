@@ -1,41 +1,43 @@
-<script setup lang="ts">
-import AppHeader from './components/layout/AppHeader.vue';
-import { useCardStore } from './stores/CardStore';
-</script>
-
 <template>
   <NConfigProvider :theme="darkTheme">
-    <NDialogProvider>
-      <AppHeader />
-      <router-view v-slot="{ Component }" class="currentpage">
-        <transition name="fade">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-    </NDialogProvider>
+    <NLoadingBarProvider>
+      <NDialogProvider>
+        <AppHeader />
+        <router-view v-slot="{ Component }" class="currentpage">
+          <transition name="fade">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </NDialogProvider>
+    </NLoadingBarProvider>
   </NConfigProvider>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { darkTheme, lightTheme, NConfigProvider, NDialogProvider } from 'naive-ui'
-
+import { defineAsyncComponent, defineComponent } from "vue";
+import { darkTheme, lightTheme, NDialogProvider, NLoadingBarProvider } from "naive-ui";
+import { useCardStore } from "./stores/CardStore";
 export default defineComponent({
   setup() {
     return {
       darkTheme,
-      lightTheme
-    }
+      lightTheme,
+    };
   },
   mounted() {
     useCardStore().getAllTags();
     console.log(import.meta.env.VITE_CLIENT_ID);
   },
-  components: { NConfigProvider }
-})
+  components: {
+    NConfigProvider: defineAsyncComponent(() => import("naive-ui/lib/config-provider/src/ConfigProvider")),
+    NDialogProvider,
+    NLoadingBarProvider,
+    AppHeader: defineAsyncComponent(() => import("./components/layout/AppHeader.vue")),
+  },
+});
 </script>
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@500&family=Inter:wght@200;500&family=Montserrat&display=swap');
-@import url('./assets/fonts/metropolis/style.css');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&family=Montserrat:wght@500&family=Oswald&display=swap");
+@import url("./assets/fonts/metropolis/style.css");
 
 :root {
   --appbg: #101014;
@@ -49,8 +51,8 @@ export default defineComponent({
   }
 
   &[theme="light"] {
-    --appbg: #FAFAFA;
-    --headerbg: #E7E7E8;
+    --appbg: #fafafa;
+    --headerbg: #e7e7e8;
   }
 
   user-select: none;
@@ -77,11 +79,11 @@ body {
 }
 
 .slide-up-enter-active {
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
 .slide-up-leave-active {
-  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-up-enter,
@@ -105,26 +107,19 @@ body {
   transition: opacity 200ms linear;
 }
 
-
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
 @keyframes neon {
   0% {
-    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
-    0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light),
-    0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
   }
   50% {
-    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
-    0 0 5px var(--shadow-color-light), 0 0 15px var(--shadow-color-light), 0 0 25px var(--shadow-color-light),
-    0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color), 0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color), 0 0 210px var(--shadow-color);
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 5px var(--shadow-color-light), 0 0 15px var(--shadow-color-light), 0 0 25px var(--shadow-color-light), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color), 0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color), 0 0 210px var(--shadow-color);
   }
   100% {
-    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light),
-    0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light),
-    0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
   }
 }
 .currentpage {

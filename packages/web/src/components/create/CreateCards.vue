@@ -17,7 +17,7 @@
       </div>
       <h2>Sentences</h2>
       <div class="scrollable-descript">
-        <NDynamicInput preset="pair" key-placeholder="Foreign Sentence" value-placeholder="Native Sentence" v-on:update-value="onSentence"/>
+        <NDynamicInput preset="pair" key-placeholder="Foreign Sentence" value-placeholder="Native Sentence" v-on:update-value="onSentence" />
       </div>
       <template #footer>
         <div class="__footer">
@@ -34,8 +34,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { NThing, NDynamicInput, NButton, NTag } from "naive-ui";
+import { computed, defineAsyncComponent, defineComponent } from "vue";
 import { CardPairArray } from "../../composables/Card";
 import { useCardStore } from "../../stores/CardStore";
 import { useAuthStore } from "../../stores/AuthStore";
@@ -48,7 +47,12 @@ export default defineComponent({
       currentCard: computed(() => cardStore.cards.get(props.title as string)),
     };
   },
-  components: { NThing, NDynamicInput, NButton, NTag },
+  components: {
+    NThing: defineAsyncComponent(() => import("naive-ui/lib/thing/src/Thing")),
+    NDynamicInput: defineAsyncComponent(() => import("naive-ui/lib/dynamic-input/src/DynamicInput")),
+    NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")),
+    NTag: defineAsyncComponent(() => import("naive-ui/lib/tag/src/Tag")),
+  },
   props: {
     title: String,
   },
@@ -58,24 +62,24 @@ export default defineComponent({
       this.words = arr;
     },
     onSentence(arr: any) {
-        this.sentences = arr;
+      this.sentences = arr;
     },
 
     onSave(words: CardPairArray[], sentences: CardPairArray[]) {
-        words.forEach((word: CardPairArray) => {
-            this.currentCard?.words.set(word.key, word.value);
-        });
-        sentences.forEach((sentence: CardPairArray) => {
-            this.currentCard?.sentences.set(sentence.key, sentence.value);
-        });
-        this.currentCard?.save(useAuthStore().user?.auth!!, null);
-        this.$router.push('/card/{ID}')
+      words.forEach((word: CardPairArray) => {
+        this.currentCard?.words.set(word.key, word.value);
+      });
+      sentences.forEach((sentence: CardPairArray) => {
+        this.currentCard?.sentences.set(sentence.key, sentence.value);
+      });
+      this.currentCard?.save(useAuthStore().user?.auth!!, null);
+      this.$router.push("/card/{ID}");
     },
   },
   data() {
     return {
       words: [],
-      sentences: []
+      sentences: [],
     };
   },
 });
@@ -92,7 +96,7 @@ export default defineComponent({
   max-width: 75vw;
   width: 55vw;
   min-width: 120px;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 .scrollable-descript {
   overflow: scroll;
@@ -133,8 +137,8 @@ export default defineComponent({
     }
   }
   .scrollable-descript {
-      padding: 0;
-      max-height: 19vh;
+    padding: 0;
+    max-height: 19vh;
   }
 }
 </style>

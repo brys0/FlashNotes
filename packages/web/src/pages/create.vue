@@ -27,28 +27,49 @@
       />
     </div>
     <div class="card-group" v-if="step == 'CreatingCards'">
-        <CreateCards :title="name"/>
+      <CreateCards :title="name" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { NButton, NIcon } from "naive-ui";
-import { AddCircleOutline as AddIcon } from "@vicons/ionicons5";
+import { defineAsyncComponent, defineComponent } from "vue";
 import { CardGroupStep } from "../composables/Card";
-import CreateCardNameTags from "../components/create/CreateCardNameTags.vue";
-import CreateCards from "../components/create/CreateCards.vue";
+import { createMeta } from "../helper";
 import { useCardStore } from "../stores/CardStore";
-import { useAuthStore } from "../stores/AuthStore";
+import { NIcon } from "naive-ui";
 export default defineComponent({
   name: "CreateNotePage",
-  components: { NButton, AddIcon, NIcon, CreateCardNameTags, CreateCards },
+  components: {
+    NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")),
+    AddIcon: defineAsyncComponent(async () => import("@vicons/ionicons5/AddCircleOutline")),
+    NIcon,
+    CreateCardNameTags: defineAsyncComponent(() => import("../components/create/CreateCardNameTags.vue")),
+    CreateCards: defineAsyncComponent(() => import("../components/create/CreateCards.vue")),
+  },
   setup() {
-      let cardStore = useCardStore();
-      return {
-          create: cardStore.createCard
-      }
+    let cardStore = useCardStore();
+    createMeta('FlashNotes ➤ Create Card', [
+      {
+        property: "og:title",
+        content: "FlashNotes ➤ Create Card",
+      },
+      {
+        property: "og:url",
+        content: "https://fn.feuer.tech/#/create",
+      },
+      {
+        property: "og:image",
+        content: "https://fn.feuer.tech/FlashNotes.png",
+      },
+      {
+        property: "og:description",
+        content: "Create your card!",
+      },
+    ])
+    return {
+      create: cardStore.createCard,
+    };
   },
   data() {
     return {

@@ -1,15 +1,22 @@
 export type CardGroupStep = "NotStarted" | "CreatingName" | "CreatingCards" | "CreatingAnnotations";
-
+export type CardGroupSearchType = "Tag" | "Title";
 export interface CardPairArray {
     key: string;
     value: string;
 }
 
-export default interface ICard {
+export interface ICardSearch {
+    value: string;
+    type: CardGroupSearchType
+}
+
+export interface ICard {
     title: string;
     tags: Array<string>;
     words: Map<string, string>;
     sentences: Map<string, string>;
+    id: string;
+    created_by: string;
 }
 
 export class Card implements ICard {
@@ -17,11 +24,15 @@ export class Card implements ICard {
     tags: Array<string>;
     words: Map<string, string>;
     sentences: Map<string, string>;
-    constructor(title: string, tags: Array<string> = []) {
+    id: string;
+    created_by: string;
+    constructor(title: string, id: string, created_by: string, tags: Array<string> = []) {
         this.title = title;
         this.tags = tags;
         this.words = new Map<string, string>();
         this.sentences = new Map<string, string>();
+        this.id = id;
+        this.created_by = created_by;
     }
 
     async save(auth: string, existingId: string | null) {

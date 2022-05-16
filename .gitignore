@@ -1,30 +1,30 @@
 # Logs
-packages/flash_notes-web/logs
-packages/flash_notes-web/*.log
-packages/flash_notes-web/npm-debug.log*
-packages/flash_notes-web/yarn-debug.log*
-packages/flash_notes-web/yarn-error.log*
-packages/flash_notes-web/pnpm-debug.log*
-packages/flash_notes-web/lerna-debug.log*
+packages/web/logs
+packages/web/*.log
+packages/web/npm-debug.log*
+packages/web/yarn-debug.log*
+packages/web/yarn-error.log*
+packages/web/pnpm-debug.log*
+packages/web/lerna-debug.log*
 
-packages/flash_notes-web/node_modules
-packages/flash_notes-web/dist
-packages/flash_notes-web/dist-ssr
-packages/flash_notes-web/*.local
+packages/web/node_modules
+packages/web/dist
+packages/web/dist-ssr
+packages/web/*.local
 
 # Editor directories and files
-packages/flash_notes-web/.vscode/*
-packages/flash_notes-web/!.vscode/extensions.json
-packages/flash_notes-web/.idea
-packages/flash_notes-web/.DS_Store
-packages/flash_notes-web/*.suo
-packages/flash_notes-web/*.ntvs*
-packages/flash_notes-web/*.njsproj
-packages/flash_notes-web/*.sln
-packages/flash_notes-web/*.sw?
-packages/flash_notes-SERV-api/.idea
-packages/flash_notes-SERV-api/.gradle
-packages/flash_notes-SERV-api/build
-packages/flash_notes-SERV-auth/node_modules
-packages/flash_notes-SERV-auth/pnpm-lock.yaml
+packages/web/.vscode/*
+packages/web/!.vscode/extensions.json
+packages/web/.idea
+packages/web/.DS_Store
+packages/web/*.suo
+packages/web/*.ntvs*
+packages/web/*.njsproj
+packages/web/*.sln
+packages/web/*.sw?
+packages/api/.idea
+packages/api/.gradle
+packages/api/build
+packages/auth/node_modules
+packages/auth/pnpm-lock.yaml
 

@@ -22,6 +22,12 @@ let routes: RouteRecordRaw[] = [
         component() {
             return import('./pages/fake.vue')
         }
+    },
+    {
+        path: '/search',
+        component() {
+            return import('./pages/search.vue')
+        }
     }
 ]
 

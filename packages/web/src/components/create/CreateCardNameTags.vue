@@ -4,7 +4,7 @@
     <NInput placeholder="Group Name" size="large" show-count :maxlength="32" v-model:value="cardTitle" />
     <div class="tags section">
       <h2 class="__info ic">What tags does this group have?</h2>
-      <NDynamicTags v-on:update-value="onTag" :max="8" size="large"/>
+      <NDynamicTags v-on:update-value="onTag" :max="8" size="large" />
     </div>
     <div class="__actions">
       <NButton type="primary" :disabled="cardTitle.length < 1" @click="$emit('create', {title: cardTitle as string, tags: cardTags as []})" icon-placement="right" :currentlyActive="cardTitle.length >= 1" class="save-btn">
@@ -20,23 +20,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { NInput, NDynamicTags, NButton, NIcon } from "naive-ui";
-import { ChevronForward as ArrowIcon } from "@vicons/ionicons5";
+import { defineComponent, defineAsyncComponent } from "vue";
+import { NIcon } from "naive-ui";
 export default defineComponent({
   name: "CreateCardName",
-  components: { NInput, NButton, NIcon, ArrowIcon, NDynamicTags },
+  components: { 
+    NInput: defineAsyncComponent(() => import("naive-ui/lib/input/src/Input")), 
+    NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")), 
+    NIcon, 
+    ArrowIcon: defineAsyncComponent(() => import("@vicons/ionicons5/ChevronForward")), 
+    NDynamicTags: defineAsyncComponent(() => import("naive-ui/lib/dynamic-tags/src/DynamicTags")), 
+  },
   data() {
     return {
       cardTitle: "",
-      cardTags: [] as any
+      cardTags: [] as any,
     };
   },
   methods: {
     onTag(value: any) {
       this.cardTags = value;
-    }
-  }
+    },
+  },
 });
 </script>
 
@@ -65,12 +70,10 @@ export default defineComponent({
   }
 }
 .__actions {
+  width: 100%;
+  margin-top: 17px;
+  .save-btn {
     width: 100%;
-    margin-top: 17px;
-    .save-btn {
-      width: 100%;
-    }
+  }
 }
-
-
 </style>

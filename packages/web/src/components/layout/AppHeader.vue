@@ -1,52 +1,52 @@
 <template>
-  <div class="header" border-bottom-left-round border-bottom-right-round>
-    <div class="logo" @click="$router.push('/')">
-      <span class="__text">FlashNotes</span>
+    <div class="header" border-bottom-left-round border-bottom-right-round>
+      <div class="logo" @click="$router.push('/')">
+        <span class="__text">FlashNotes</span>
+      </div>
+
+      <div class="actions">
+        <div class="__action source">
+          <NButton type="info" secondary @click="window.open('https://github.com/brys0/FlashNotes', '_blank')">
+            <template #icon>
+              <NIcon>
+                <CodeIcon />
+              </NIcon>
+            </template>
+            Source
+          </NButton>
+        </div>
+        <div :class="`__action ifLoggedOut ${$router.currentRoute.value.query.highlight == 'login' ? 'blink' : ''}`" v-if="user == null">
+          <NButton
+            type="primary"
+            :loading="loading"
+            @click="
+              () => {
+                handleSignIn();
+              }
+            "
+          >
+            <template #icon>
+              <NIcon>
+                <LoginIcon />
+              </NIcon>
+            </template>
+            Login
+          </NButton>
+        </div>
+        <div class="__action ifLoggedIn" v-if="user != null">
+          <NButton type="error" @click="deleteUser()">
+            <template #icon>
+              <NIcon>
+                <div class="flip">
+                  <LogOutIcon />
+                </div>
+              </NIcon>
+            </template>
+            Logout
+          </NButton>
+        </div>
+      </div>
     </div>
-    
-    <div class="actions">
-      <div class="__action source">
-        <NButton type="info" secondary @click="window.open('https://github.com/brys0/FlashNotes', '_blank')">
-          <template #icon>
-            <NIcon>
-              <CodeIcon />
-            </NIcon>
-          </template>
-          Source
-        </NButton>
-      </div>
-      <div :class="`__action ifLoggedOut ${$router.currentRoute.value.query.highlight == 'login' ? 'blink' : ''}`" v-if="user == null" >
-        <NButton
-          type="primary"
-          :loading="loading"
-          @click="
-            () => {
-              handleSignIn();
-            }
-          "
-        >
-          <template #icon>
-            <NIcon>
-              <LoginIcon />
-            </NIcon>
-          </template>
-          Login
-        </NButton>
-      </div>
-      <div class="__action ifLoggedIn" v-if="user != null">
-        <NButton type="error" @click="deleteUser()">
-          <template #icon>
-            <NIcon>
-              <div class="flip">
-                <LogOutIcon />
-              </div>
-            </NIcon>
-          </template>
-          Logout
-        </NButton>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -54,6 +54,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { NButton, NIcon, NAvatar } from "naive-ui";
 import { LogInOutline as LoginIcon, LogOutOutline as LogOutIcon, CodeOutline as CodeIcon } from "@vicons/ionicons5";
 import { IUser, useAuthStore } from "../../stores/AuthStore";
+// @ts-ignore
 import googleOneTapSignin from "../../composables/googleOneTap.js";
 export default defineComponent({
   name: "AppHeader",
@@ -119,20 +120,20 @@ export default defineComponent({
   transform: rotate(90deg);
 }
 .blink {
- animation: blinkMe 2s linear infinite;
+  animation: blinkMe 2s linear infinite;
 }
 @keyframes blinkMe {
- 0% {
-  opacity: .5;
-  filter: brightness(100%);
- }
- 50% {
-  opacity: 1;
-  filter: brightness(150%);
- }
- 100% {
-  opacity: .5;
-  filter: brightness(100%);
- }
+  0% {
+    opacity: 0.5;
+    filter: brightness(100%);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(150%);
+  }
+  100% {
+    opacity: 0.5;
+    filter: brightness(100%);
+  }
 }
 </style>

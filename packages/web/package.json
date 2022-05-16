@@ -8,18 +8,23 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "@types/koa": "^2.13.4",
+    "@sergeymakinen/vite-plugin-html-minimize": "^1.0.2",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^0.27.2",
-    "koa": "^2.13.4",
-    "koa-connect": "^2.1.0",
     "naive-ui": "^2.28.4",
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.5.1",
+    "rollup-plugin-visualizer": "^5.6.0",
     "sass": "^1.51.0",
+    "vite-plugin-pwa": "^0.12.0",
     "vue": "^3.2.25",
+    "vue-meta": "^3.0.0-alpha.10",
     "vue-router": "^4.0.15",
     "vue3-google-oauth2": "^1.0.6",
+    "workbox-expiration": "^6.5.3",
+    "workbox-precaching": "^6.5.3",
+    "workbox-routing": "^6.5.3",
+    "workbox-strategies": "^6.5.3",
     "xicons": "^1.0.0"
   },
   "devDependencies": {
