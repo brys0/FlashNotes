@@ -96,7 +96,7 @@ export default defineComponent({
   max-width: 75vw;
   width: 55vw;
   min-width: 120px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .scrollable-descript {
   overflow: scroll;
@@ -105,9 +105,7 @@ export default defineComponent({
   flex-direction: column;
   padding-right: 25px;
   padding-left: 25px;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+
 }
 .__footer {
   display: flex;

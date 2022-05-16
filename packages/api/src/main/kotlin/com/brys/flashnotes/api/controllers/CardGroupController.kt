@@ -10,7 +10,7 @@ import io.javalin.plugin.openapi.annotations.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class CardGroupController(private val cache: Cache, private val snowflake: Snowflake) {
+class CardGroupController(private val cache: Cache, private val snowflake: Snowflake, private val allowlist: List<String>?, private val blocklist: List<String>?) {
     @OpenApi(
         path = "/create",
         method = HttpMethod.POST,
@@ -35,7 +35,7 @@ class CardGroupController(private val cache: Cache, private val snowflake: Snowf
     fun createGroup(ctx: Context) {
         val cardGroup = ctx.bodyAsClass<CreateCardGroup>()
         val cardGroupId = ctx.queryParam("groupid")?.toLong()
-        val user = requireAuth(cache, ctx)
+        val user = requireAuth(cache, ctx, allowlist, blocklist)
         if (user != null) {
             if (cardGroupId == null) {
                 val newGroup = CardGroup(
@@ -82,6 +82,37 @@ class CardGroupController(private val cache: Cache, private val snowflake: Snowf
                     ctx.status(204)
                     return
                 }
+            }
+        }
+    }
+
+    @OpenApi(
+        path = "/mygroups",
+        method = HttpMethod.GET,
+        responses = [OpenApiResponse("204"), OpenApiResponse(
+            "200",
+            content = [OpenApiContent(CardGroup::class, type = "application/json", isArray = true)]
+        )],
+        summary = "Get self groups",
+        description = "Gets all users posts",
+        tags = ["User", "Post"],
+        operationId = "getSelfPosts"
+    )
+    fun getMyGroups(ctx: Context) {
+        val user = requireAuth(cache, ctx, allowlist, blocklist)
+        if (user != null) {
+            val existing = mutableListOf<CardGroup>()
+            cache.groups.values.forEach {
+                if (it.created_from == user.identifier) {
+                    existing.add(it)
+                }
+            }
+            if (existing.isNotEmpty()) {
+                ctx.status(200).json(existing)
+                return
+            } else {
+                ctx.status(204)
+                return
             }
         }
     }
@@ -191,8 +222,10 @@ class CardGroupController(private val cache: Cache, private val snowflake: Snowf
     )
 }
 
-fun requireAuth(cache: Cache, ctx: Context): User? {
+fun requireAuth(cache: Cache, ctx: Context, allowlist: List<String>? = null, blocklist: List<String>? = null): User? {
     val auth = ctx.header("Authorization")
+    val whiteListActive = allowlist?.isNotEmpty()
+    val blackListActive = blocklist?.isNotEmpty()
     cache.users.values.forEach {
         println("User ${it.name} (${it.identifier}) - ${it.auth} Compare $auth")
     }
@@ -200,6 +233,23 @@ fun requireAuth(cache: Cache, ctx: Context): User? {
         ctx.status(401).json(UserAuthFail())
     } else {
         val user = cache.users.values.find { user -> user.auth == auth }
+        if (whiteListActive == true && !allowlist.contains(user?.email)) {
+            ctx.status(403).json(
+                VerifyGoogleController.Companion.NotInWhiteList(
+                    "USER_NOT_IN_LIST",
+                    "This server is using a allowlist, and you're email isn't in it"
+                )
+            )
+            return null
+        } else if (blackListActive == true && blocklist.contains(user?.email)) {
+            ctx.status(403).json(
+                VerifyGoogleController.Companion.InBlackList(
+                    "USER_IN_LIST",
+                    "This server is using a blocklist, and you're in it"
+                )
+            )
+            return null
+        }
         return if (user == null) {
             ctx.status(401).json(UserAuthFail())
             null

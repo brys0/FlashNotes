@@ -1,11 +1,18 @@
 <template>
   <div class="create-note">
     <div class="options" v-if="step == 'NotStarted'">
-      <div class="__option" v-if="false">
-        <NButton size="large">Use An Existing Group</NButton>
+      <div class="__option">
+        <NButton size="large" :disabled="cards.length == 0" type="info" secondary>
+          <template #icon> 
+            <NIcon>
+              <CardIcon/>
+            </NIcon>
+          </template>
+          Use An Existing Group
+        </NButton>
       </div>
       <div class="__option">
-        <NButton size="large" @click="step = 'CreatingName'">
+        <NButton size="large" @click="step = 'CreatingName'" type="success" secondary>
           <template #icon>
             <NIcon>
               <AddIcon />
@@ -16,15 +23,13 @@
       </div>
     </div>
     <div class="card-group" v-if="step == 'CreatingName'">
-      <CreateCardNameTags
-        @create="
-          (value) => {
-            step = 'CreatingCards';
-            name = value.title;
-            create(value.title, value.tags);
-          }
-        "
-      />
+      <CreateCardNameTags @create="
+        (value) => {
+          step = 'CreatingCards';
+          name = value.title;
+          create(value.title, value.tags);
+        }
+      " />
     </div>
     <div class="card-group" v-if="step == 'CreatingCards'">
       <CreateCards :title="name" />
@@ -33,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
+import { defineAsyncComponent, defineComponent, computed } from "vue";
 import { CardGroupStep } from "../composables/Card";
 import { createMeta } from "../helper";
 import { useCardStore } from "../stores/CardStore";
@@ -42,7 +47,8 @@ export default defineComponent({
   name: "CreateNotePage",
   components: {
     NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")),
-    AddIcon: defineAsyncComponent(async () => import("@vicons/ionicons5/AddCircleOutline")),
+    AddIcon: defineAsyncComponent(() => import("@vicons/ionicons5/AddCircleOutline")),
+    CardIcon: defineAsyncComponent(() => import('@vicons/ionicons5/CardOutline')),
     NIcon,
     CreateCardNameTags: defineAsyncComponent(() => import("../components/create/CreateCardNameTags.vue")),
     CreateCards: defineAsyncComponent(() => import("../components/create/CreateCards.vue")),
@@ -69,6 +75,7 @@ export default defineComponent({
     ])
     return {
       create: cardStore.createCard,
+      cards: computed(() => Array.from(cardStore.cards.values()))
     };
   },
   data() {
@@ -92,6 +99,7 @@ export default defineComponent({
     align-items: center;
     gap: 16px;
   }
+
   .card-group {
     display: flex;
     flex-direction: column;

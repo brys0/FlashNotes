@@ -2,9 +2,6 @@ package com.brys.flashnotes.api
 
 import com.brys.flashnotes.api.controllers.CardGroupController
 import com.brys.flashnotes.api.controllers.VerifyGoogleController
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier
-import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.json.gson.GsonFactory
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
 import io.javalin.apibuilder.ApiBuilder.post
@@ -14,7 +11,6 @@ import io.javalin.plugin.openapi.OpenApiPlugin
 import io.javalin.plugin.openapi.ui.ReDocOptions
 import io.javalin.plugin.openapi.ui.SwaggerOptions
 import io.swagger.v3.oas.models.info.Info
-import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.ExecutorService
@@ -24,6 +20,8 @@ import java.util.concurrent.Executors
 fun main() {
     val id = System.getenv("GOOGLE_CLIENT_ID")
     val port = System.getenv("PORT").toInt()
+    val allowlist = System.getenv("ALLOWLIST").split(",")
+    val blocklist = System.getenv("BLOCKLIST").split(",")
      val dateFormatter: DateTimeFormatter =
         DateTimeFormatter.ofPattern("dd-MM-yyyy").withZone(ZoneId.systemDefault())
     val timeFormatter: DateTimeFormatter =
@@ -37,14 +35,15 @@ fun main() {
         it.registerPlugin(RouteOverviewPlugin("/routes"))
         it.registerPlugin(getConfiguredOpenApiPlugin())
     }
-    val googleController = VerifyGoogleController(id, cache, snowflake)
-    val cardGroupController = CardGroupController(cache, snowflake)
+    val googleController = VerifyGoogleController(id, cache, snowflake, allowlist, blocklist)
+    val cardGroupController = CardGroupController(cache, snowflake, allowlist, blocklist)
     javalin.routes {
         post("/verify-token", googleController::verifyToken)
         post("/create", cardGroupController::createGroup)
         get("/tags", cardGroupController::getTags)
         get("/filter", cardGroupController::filterCards)
         get("/browse", cardGroupController::browseCards)
+        get("/mygroups", cardGroupController::getMyGroups)
     }
     javalin.start(port)
 }

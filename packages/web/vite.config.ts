@@ -103,6 +103,13 @@ export default defineConfig({
         ws: true,
         ignorePath: false,
         prependPath: true
+      },
+      '/mygroups': {
+        target: 'http://127.0.0.1:3001/',
+        secure: false,
+        ws: true,
+        ignorePath: false,
+        prependPath: true
       }
     },
   }

@@ -28,6 +28,13 @@ let routes: RouteRecordRaw[] = [
         component() {
             return import('./pages/search.vue')
         }
+    },
+    {
+        path: '/card/:id',
+        props: true,
+        component() {
+            return import('./pages/card.vue')
+        }
     }
 ]
 
@@ -37,6 +44,6 @@ export const router = createRouter({
 })
 
 router.beforeEach((to, from, next: NavigationGuardNext) => {
-    if (to.meta.requireAuth && useAuthStore().user == null) next({ path: '/', query: {highlight: 'login'}});
+    if (to.meta.requireAuth && useAuthStore().user == null) next({ path: '/', query: { highlight: 'login' } });
     else next();
 })

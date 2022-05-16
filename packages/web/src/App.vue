@@ -25,6 +25,7 @@ export default defineComponent({
   },
   mounted() {
     useCardStore().getAllTags();
+    useCardStore().getMyGroups();
     console.log(import.meta.env.VITE_CLIENT_ID);
   },
   components: {
@@ -124,5 +125,23 @@ body {
 }
 .currentpage {
   height: calc(100vh - 46.4px);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #4a4d52;
+  border: 2px solid #282a2d;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-corner {
+  display: none;
 }
 </style>

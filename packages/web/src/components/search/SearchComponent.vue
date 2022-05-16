@@ -12,7 +12,7 @@
       </div>
     </div>
     <NInput size="large" placeholder="Input your search term" v-on:update-value="(e) => { debounceEmit(e, searchType) }" v-model="searchInput"/>
-    <NSelect filterable placeholder="Search Tags"/>
+    <NSelect filterable placeholder="Search Tags" disabled v-if="false"/>
   </div>
 </template>
 

@@ -9,10 +9,12 @@ import com.google.api.client.json.gson.GsonFactory
 import io.javalin.http.Context
 import io.javalin.plugin.openapi.annotations.*
 
-class VerifyGoogleController(private val gid: String, private val cache: Cache, private val snowflake: Snowflake) {
+class VerifyGoogleController(private val gid: String, private val cache: Cache, private val snowflake: Snowflake, private val allowlist: List<String>, private val blocklist: List<String>) {
     private val verifier: GoogleIdTokenVerifier = GoogleIdTokenVerifier.Builder(NetHttpTransport(), GsonFactory())
         .setAudience(listOf(gid))
         .build()
+    private val whiteListActive = allowlist.isNotEmpty()
+    private val blackListActive = blocklist.isNotEmpty()
     @OpenApi(
         path = "/verify-token",
         method = HttpMethod.POST,
@@ -33,6 +35,13 @@ class VerifyGoogleController(private val gid: String, private val cache: Cache, 
             val idToken = verifier.verify(body.credential)
             if (idToken != null) {
                 val payload = idToken.payload
+                if (whiteListActive && !allowlist.contains(payload.email)) {
+                    ctx.status(403).json(NotInWhiteList("USER_NOT_IN_LIST", "This server is using a allowlist, and your email isn't in it"))
+                    return
+                } else if (blackListActive && blocklist.contains(payload.email)) {
+                    ctx.status(403).json(InBlackList("USER_IN_LIST", "This server is using a blocklist, and you're in it"))
+                    return
+                }
                 val existing = cache.users.values.find { u -> u.email == payload.email }
                 if (existing == null) {
                     val newSnowflake = snowflake.nextId()
@@ -61,6 +70,16 @@ class VerifyGoogleController(private val gid: String, private val cache: Cache, 
 
         data class FailedToAuthenticate(
             val code: String,
+            val message: String?
+        )
+
+        data class NotInWhiteList(
+            val code: String?,
+            val message: String?
+        )
+
+        data class InBlackList(
+            val code: String?,
             val message: String?
         )
     }

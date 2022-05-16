@@ -81,7 +81,7 @@ export default defineComponent({
   overflow: hidden;
 }
 .cards {
-  overflow: scroll;
+  overflow-y: auto;
   max-height: calc(100% - 350px);
   height: calc(100% - 350px);
   .__loading {
