@@ -1,57 +1,57 @@
 <template>
-    <div class="header" border-bottom-left-round border-bottom-right-round>
-      <div class="logo" @click="$router.push('/')">
-        <span class="__text">FlashNotes</span>
-      </div>
+  <div class="header" border-bottom-left-round border-bottom-right-round>
+    <div class="logo" @click="$router.push('/')" clickable>
+      <span class="__text">FlashNotes</span>
+    </div>
 
-      <div class="actions">
-        <div class="__action source">
-          <NButton type="info" secondary @click="window.open('https://github.com/brys0/FlashNotes', '_blank')">
-            <template #icon>
-              <NIcon>
-                <CodeIcon />
-              </NIcon>
-            </template>
-            Source
-          </NButton>
-        </div>
-        <div :class="`__action ifLoggedOut ${$router.currentRoute.value.query.highlight == 'login' ? 'blink' : ''}`" v-if="user == null">
-          <NButton
-            type="primary"
-            :loading="loading"
-            @click="
-              () => {
-                handleSignIn();
-              }
-            "
-          >
-            <template #icon>
-              <NIcon>
-                <LoginIcon />
-              </NIcon>
-            </template>
-            Login
-          </NButton>
-        </div>
-        <div class="__action ifLoggedIn" v-if="user != null">
-          <NButton type="error" @click="deleteUser()">
-            <template #icon>
-              <NIcon>
-                <div class="flip">
-                  <LogOutIcon />
-                </div>
-              </NIcon>
-            </template>
-            Logout
-          </NButton>
-        </div>
+    <div class="actions">
+      <div class="__action source">
+        <NButton type="info" secondary @click="window.open('https://github.com/brys0/FlashNotes', '_blank')">
+          <template #icon>
+            <NIcon>
+              <CodeIcon />
+            </NIcon>
+          </template>
+          Source
+        </NButton>
+      </div>
+      <div :class="`__action ifLoggedOut ${$router.currentRoute.value.query.highlight == 'login' ? 'blink' : ''}`" v-if="user == null">
+        <NButton
+          type="primary"
+          :loading="loading"
+          @click="
+            () => {
+              handleSignIn();
+            }
+          "
+        >
+          <template #icon>
+            <NIcon>
+              <LoginIcon />
+            </NIcon>
+          </template>
+          Login
+        </NButton>
+      </div>
+      <div class="__action ifLoggedIn" v-if="user != null">
+        <NButton type="error" @click="deleteUser()">
+          <template #icon>
+            <NIcon>
+              <div class="flip">
+                <LogOutIcon />
+              </div>
+            </NIcon>
+          </template>
+          Logout
+        </NButton>
       </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import { NButton, NIcon, NAvatar } from "naive-ui";
+import { NButton, NIcon, NAvatar, useLoadingBar, useDialog, useMessage } from "naive-ui";
 import { LogInOutline as LoginIcon, LogOutOutline as LogOutIcon, CodeOutline as CodeIcon } from "@vicons/ionicons5";
 import { IUser, useAuthStore } from "../../stores/AuthStore";
 // @ts-ignore
@@ -65,20 +65,29 @@ export default defineComponent({
       user: computed(() => authStore.user as IUser),
       createUser: authStore.setAuthedUser,
       deleteUser: authStore.deleteUser,
+      loadingBar: useLoadingBar(),
+      message: useMessage(),
       loading: ref(false),
       window: window,
     };
   },
   methods: {
     async handleSignIn() {
+      this.loadingBar.start();
       this.loading = true;
-      const { googleOptions, oneTapSignin, userData } = googleOneTapSignin();
+      const { googleOptions, oneTapSignin, userData, errorData } = googleOneTapSignin();
+
       oneTapSignin(googleOptions);
+      watch(errorData, () => {
+        this.loadingBar.error();
+        this.message.error(`You aren't allowed to sign in (${errorData.value})`);
+        this.loading = false;
+      });
       watch(userData, () => {
         this.loading = false;
         // @ts-ignore
         this.createUser({ name: userData.value.name, email: userData.value.email, auth: userData.value.auth, id: userData.value.id });
-        console.log(userData.value);
+        this.loadingBar.finish();
       });
     },
   },
@@ -95,6 +104,7 @@ export default defineComponent({
   background-color: var(--headerbg);
 
   .logo {
+    cursor: pointer;
     .__text {
       font-size: 1.5rem;
       color: #70c0e8;

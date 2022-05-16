@@ -7,6 +7,7 @@ export default function () {
   const API_URL = ''
 
   const userData = ref()
+  const errorData = ref()
 
   const googleOptions = {
     client_id: CLIENT_ID, // required
@@ -67,10 +68,10 @@ export default function () {
           userData.value = res.data
         })
         .catch((error) => {
-          console.log(error)
+          errorData.value = error.response.data.code;
         })
     })
   }
 
-  return { googleOptions, oneTapSignin, userData }
+  return { googleOptions, oneTapSignin, userData, errorData }
 }

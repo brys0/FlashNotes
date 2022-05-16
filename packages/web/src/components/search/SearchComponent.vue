@@ -11,13 +11,13 @@
         </NButton>
       </div>
     </div>
-    <NInput size="large" placeholder="Input your search term" v-on:update-value="(e) => { debounceEmit(e, searchType) }" v-model="searchInput"/>
+    <NInput size="large" placeholder="Input your search term" v-on:update-value="(e) => { debounceEmit(e, searchType); searchInput = e; }"/>
     <NSelect filterable placeholder="Search Tags" disabled v-if="false"/>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineAsyncComponent, defineComponent } from "vue";
+import { computed, defineAsyncComponent, defineComponent, watch } from "vue";
 import { CardGroupSearchType } from "../../composables/Card";
 import {debounce} from '../../helper';
 import { useCardStore } from "../../stores/CardStore";

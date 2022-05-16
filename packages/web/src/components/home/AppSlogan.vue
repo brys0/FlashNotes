@@ -28,6 +28,14 @@
         Delete My Account
       </NButton>
     </div>
+    <div class="git-info">
+      <Suspense>
+        <template #default>
+          <LatestCommit />
+        </template>
+        <template #fallback> Loading... </template>
+      </Suspense>
+    </div>
   </div>
 </template>
 
@@ -37,13 +45,14 @@ import { useAuthStore } from "../../stores/AuthStore";
 import { NIcon } from "naive-ui";
 export default defineComponent({
   name: "AppSlogan",
-  components: { 
+  components: {
     NButton: defineAsyncComponent(() => import("naive-ui/lib/button/src/Button")),
-    ArrowUp: defineAsyncComponent(() => import("@vicons/ionicons5/ArrowUp")), 
+    ArrowUp: defineAsyncComponent(() => import("@vicons/ionicons5/ArrowUp")),
     NIcon,
-    RemoveIcon: defineAsyncComponent(() => import("@vicons/ionicons5/PersonRemoveOutline")),  
-    SearchIcon: defineAsyncComponent(() => import("@vicons/ionicons5/Search"))
-    },
+    RemoveIcon: defineAsyncComponent(() => import("@vicons/ionicons5/PersonRemoveOutline")),
+    SearchIcon: defineAsyncComponent(() => import("@vicons/ionicons5/Search")),
+    LatestCommit: defineAsyncComponent(() => import("./LatestCommit.vue")),
+  },
   setup() {
     let authStore = useAuthStore();
     return {
@@ -118,4 +127,5 @@ export default defineComponent({
     transform: translateY(0);
   }
 }
+
 </style>

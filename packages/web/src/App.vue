@@ -1,20 +1,22 @@
 <template>
   <NConfigProvider :theme="darkTheme">
     <NLoadingBarProvider>
-      <NDialogProvider>
-        <AppHeader />
-        <router-view v-slot="{ Component }" class="currentpage">
-          <transition name="fade">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </NDialogProvider>
+      <NMessageProvider>
+        <NDialogProvider>
+          <AppHeader />
+          <router-view v-slot="{ Component }" class="currentpage">
+            <transition name="fade">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </NDialogProvider>
+      </NMessageProvider>
     </NLoadingBarProvider>
   </NConfigProvider>
 </template>
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
-import { darkTheme, lightTheme, NDialogProvider, NLoadingBarProvider } from "naive-ui";
+import { darkTheme, lightTheme, NDialogProvider, NLoadingBarProvider, NMessageProvider } from "naive-ui";
 import { useCardStore } from "./stores/CardStore";
 export default defineComponent({
   setup() {
@@ -32,6 +34,7 @@ export default defineComponent({
     NConfigProvider: defineAsyncComponent(() => import("naive-ui/lib/config-provider/src/ConfigProvider")),
     NDialogProvider,
     NLoadingBarProvider,
+    NMessageProvider,
     AppHeader: defineAsyncComponent(() => import("./components/layout/AppHeader.vue")),
   },
 });
