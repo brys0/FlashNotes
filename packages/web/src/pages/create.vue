@@ -27,7 +27,7 @@
         (value) => {
           step = 'CreatingCards';
           name = value.title;
-          create(value.title, value.tags);
+          create(value.title, '0', user?.id!!, value.tags);
         }
       " />
     </div>
@@ -43,6 +43,7 @@ import { CardGroupStep } from "../composables/Card";
 import { createMeta } from "../helper";
 import { useCardStore } from "../stores/CardStore";
 import { NIcon } from "naive-ui";
+import { useAuthStore } from "../stores/AuthStore";
 export default defineComponent({
   name: "CreateNotePage",
   components: {
@@ -75,7 +76,8 @@ export default defineComponent({
     ])
     return {
       create: cardStore.createCard,
-      cards: computed(() => Array.from(cardStore.cards.values()))
+      cards: computed(() => Array.from(cardStore.cards.values())),
+      user: computed(() => useAuthStore().user)
     };
   },
   data() {

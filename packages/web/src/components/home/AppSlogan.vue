@@ -33,7 +33,6 @@
         <template #default>
           <LatestCommit />
         </template>
-        <template #fallback> Loading... </template>
       </Suspense>
     </div>
   </div>
@@ -94,6 +93,9 @@ export default defineComponent({
     margin-bottom: auto;
     flex-flow: column;
     width: 75%;
+    animation: bringUp 250ms ease-in-out forwards;
+  }
+  .git-info {
     animation: bringUp 250ms ease-in-out forwards;
   }
 }
