@@ -10,21 +10,21 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
   name: "LatestCommitCard",
   async setup() {
-    let gitRes = await fetch("https://api.github.com/repos/brys0/FlashNotes/commits");
+    let gitRes = await fetch("https://api.github.com/repos/brys0/FlashNotes/releases");
     let errored;
-    let commitData;
+    let releaseData;
     if (gitRes.status != 200) {
       errored = true;
     }
-    let latestCommit = ((await gitRes.json()) as Array<any>)[0].commit;
-    console.log(latestCommit);
-    commitData = {
-      message: latestCommit.message,
-      sha: latestCommit.tree.sha,
-      author: latestCommit.author.name,
+    let latestRelease = ((await gitRes.json()) as Array<any>)[0];
+    if (latestRelease == undefined) return
+    releaseData = {
+        url: latestRelease.html_url,
+        version: latestRelease.name,
+        prerelease: latestRelease.prerelease
     };
     return {
-      commitData: commitData,
+      commitData: releaseData,
       errored: errored,
     };
   },
