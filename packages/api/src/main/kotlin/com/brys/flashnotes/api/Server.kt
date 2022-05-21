@@ -44,6 +44,7 @@ fun main() {
         get("/filter", cardGroupController::filterCards)
         get("/browse", cardGroupController::browseCards)
         get("/mygroups", cardGroupController::getMyGroups)
+        get("/card", cardGroupController::getCardGroup)
     }
     javalin.start(port)
 }

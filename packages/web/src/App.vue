@@ -4,11 +4,20 @@
       <NMessageProvider>
         <NDialogProvider>
           <AppHeader />
-          <router-view v-slot="{ Component }" class="currentpage">
-            <transition name="fade">
-              <component :is="Component" />
-            </transition>
-          </router-view>
+          <Suspense>
+
+            <template #default>
+              <router-view v-slot="{ Component }" class="currentpage">
+                <transition name="fade">
+                  <component :is="Component" />
+                </transition>
+              </router-view>
+            </template>
+            <template #fallback>
+              <h1>Loading...</h1>
+            </template>
+
+          </Suspense>
         </NDialogProvider>
       </NMessageProvider>
     </NLoadingBarProvider>
@@ -49,6 +58,7 @@ export default defineComponent({
   --green: #63e2b7;
   --shadow-color: #9ed8ff;
   --shadow-color-light: white;
+
   &[theme="dark"] {
     --appbg: #101014;
     --headerbg: #0a0a0a;
@@ -106,6 +116,7 @@ body {
   opacity: 0;
   transform: translateY(120px);
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 200ms linear;
@@ -115,17 +126,21 @@ body {
 .fade-leave-to {
   opacity: 0;
 }
+
 @keyframes neon {
   0% {
     text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
   }
+
   50% {
     text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 5px var(--shadow-color-light), 0 0 15px var(--shadow-color-light), 0 0 25px var(--shadow-color-light), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color), 0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color), 0 0 210px var(--shadow-color);
   }
+
   100% {
     text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 3px var(--shadow-color-light), 0 0 10px var(--shadow-color-light), 0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color), 0 0 200px var(--shadow-color);
   }
 }
+
 .currentpage {
   height: calc(100vh - 46.4px);
 }
@@ -134,16 +149,19 @@ body {
   width: 12px;
   background-color: transparent;
 }
+
 ::-webkit-scrollbar-button {
   display: none;
   width: 0;
   height: 0;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #4a4d52;
   border: 2px solid #282a2d;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-corner {
   display: none;
 }

@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { ICard, Card, CardGroupSearchType } from "../composables/Card";
-import { useAuthStore } from "./AuthStore";
+import { Nullable, useAuthStore } from "./AuthStore";
 export const useCardStore = defineStore('CardStore', {
     state: () => {
         return {
             tags: new Array<String>(),
             cards: new Map<string, Card>(),
 
+            currentCard: null as Nullable<Card>,
             searchCards: new Map<string, Card>()
         }
     },
@@ -102,6 +103,27 @@ export const useCardStore = defineStore('CardStore', {
 
                 this.searchCards.set(card.id, card);
             }
+        },
+        
+        async getCard(id: string) {
+            let res = await fetch(`/card?id=${id}`);
+            let interfacedCard = await res.json();
+            let cardWordEntries = Object.entries(interfacedCard.words);
+            let cardSentenceEntries = Object.entries(interfacedCard.sentences);
+            let card = new Card(interfacedCard.title, interfacedCard.id, interfacedCard.created_by, interfacedCard.tags);
+            for (let we = 0; cardWordEntries.length > we; we++) {
+                let wordKeyPair = cardWordEntries[we];
+                let key = wordKeyPair[0] as string;
+                let value = wordKeyPair[1] as string;
+                card.words.set(key, value);
+            }
+            for (let se = 0; cardSentenceEntries.length > se; se++) {
+                let sentenceKeyPair = cardSentenceEntries[se];
+                let key = sentenceKeyPair[0] as string;
+                let value = sentenceKeyPair[1] as string;
+                card.sentences.set(key, value);
+            }
+            this.currentCard = card;
         }
     }
 })

@@ -214,6 +214,16 @@ class CardGroupController(private val cache: Cache, private val snowflake: Snowf
         ctx.json(cache.groups.values.chunked(20)[0]).status(200)
     }
 
+    fun getCardGroup(ctx: Context) {
+        val key = ctx.queryParam("id")?.toLong()
+        if (key == null) {
+            ctx.status(400)
+            return
+        } else {
+            cache.groups[key]?.let { ctx.status(200).json(it) }
+        }
+
+    }
     data class CreateCardGroup(
         var title: String = "Example Group",
         var sentences: MutableMap<String, String> = mutableMapOf(),

@@ -1,18 +1,26 @@
 <template>
     <div class="card currentPage">
-        
+        <CardLayout :card="card!!"/>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { computed, defineComponent } from "vue";
+import { useRoute } from "vue-router";
+import { useCardStore } from "../stores/CardStore";
+import CardLayout from "../components/card/CardLayout.vue";
 export default defineComponent({
     name: 'CardPage',
-    beforeCreate() {
-        if (!this.$router.currentRoute.value.params.id) {
-            return this.$router.push('/');
+    async setup() {
+        const route = useRoute();
+        const cardStore = useCardStore();
+        let cardID = route.params.id as string;
+        if (!cardID) location.href = "/";
+        cardStore.getCard(cardID);
+        return {
+            card: computed(() => cardStore.currentCard)
         }
-    }
+    },
+    components: {CardLayout}
 })
 </script>
