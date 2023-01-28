@@ -18,9 +18,18 @@ export default defineComponent({
         if (!cardID) location.href = "/";
         cardStore.getCard(cardID);
         return {
-            card: computed(() => cardStore.currentCard)
+            card: computed(() => cardStore.currentCard),
         }
     },
     components: {CardLayout}
 })
 </script>
+
+<style lang="scss" scoped>
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+</style>

@@ -1,0 +1,97 @@
+@import "./variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Titillium+Web:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+html,
+body {
+  background-color: $background-primary;
+  font-family: Work Sans, Arial;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+}
+
+.button-comp {
+  @apply cursor-pointer select-none font-medium shadow-sm rounded-xl h-10 px-4 w-full transition-all duration-200 text-dark-600 bg-[$foreground-action];
+  &.accent {
+    @apply bg-[$accent];
+    &:hover {
+      @apply bg-[$accent-hover] shadow-[#ff867110] shadow-sm bg-opacity-70;
+    }
+  }
+  &.dark {
+    @apply bg-[$foreground-contrast] text-light-200;
+    &:hover {
+      @apply bg-[$foreground-contrast-hover] bg-opacity-80 shadow-dark-400/40 shadow-sm;
+    }
+  }
+  &:hover {
+    @apply bg-[$foreground-action-hover] shadow-sm shadow-gray-400/20;
+  }
+}
+
+.text-foreground {
+  color: $foreground-contrast;
+}
+
+.font-ti {
+  font-family: Titillium Web;
+}
+
+#__nuxt {
+  height: 100%;
+  width: 100%;
+}
+
+@keyframes fade-rotate-scale-in {
+  0% {
+    opacity: 0;
+    transform: rotate(6deg) scale(0.75) translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1) translateY(0);
+  }
+}
+
+.animate-fade-rotate-scale-in {
+  -webkit-animation: fade-rotate-scale-in 0.5s ease forwards;
+  animation: fade-rotate-scale-in 0.5s ease forwards;
+}
+@keyframes fade-rotate-in-lg {
+  0% {
+    opacity: 0;
+    transform: rotate(2deg) translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translateY(0);
+  }
+}
+.animate-fade-rotate-in-lg {
+  -webkit-animation: fade-rotate-in-lg 0.5s ease forwards;
+  animation: fade-rotate-in-lg 0.5s ease forwards;
+}
+@-webkit-keyframes fade-rotate-in {
+  0% {
+    opacity: 0;
+    transform: rotate(3deg) translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translateY(0);
+  }
+}
+@keyframes fade-rotate-in {
+  0% {
+    opacity: 0;
+    transform: rotate(3deg) translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translateY(0);
+  }
+}
+.animate-fade-rotate-in {
+  -webkit-animation: fade-rotate-in 0.5s ease forwards;
+  animation: fade-rotate-in 0.5s ease forwards;
+}

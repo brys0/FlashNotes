@@ -1,11 +1,10 @@
 <template>
   <NConfigProvider :theme="darkTheme">
     <NLoadingBarProvider>
-      <NMessageProvider>
+      <NMessageProvider class="message-dialog">
         <NDialogProvider>
           <AppHeader />
           <Suspense>
-
             <template #default>
               <router-view v-slot="{ Component }" class="currentpage">
                 <transition name="fade">
@@ -16,7 +15,6 @@
             <template #fallback>
               <h1>Loading...</h1>
             </template>
-
           </Suspense>
         </NDialogProvider>
       </NMessageProvider>
@@ -164,5 +162,8 @@ body {
 
 ::-webkit-scrollbar-corner {
   display: none;
+}
+.n-message-container.n-message-container--top {
+  top: 65px !important;
 }
 </style>

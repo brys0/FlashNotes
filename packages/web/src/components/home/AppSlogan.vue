@@ -3,7 +3,10 @@
     <span class="__title"> FlashNotes </span>
     <span class="__slog"> Write Notes In A <span class="neon">Flash</span> </span>
     <div class="__actions">
-      <NButton size="large" @click="$router.push('/search')" type="default" text>
+      <NButton size="large"
+        @click="$router.push('/search')"
+        type="default"
+        text>
         <template #icon>
           <NIcon>
             <SearchIcon />
@@ -11,7 +14,9 @@
         </template>
         Search
       </NButton>
-      <NButton size="large" @click="$router.push('/create')" :disabled="user == null">
+      <NButton size="large"
+        @click="$router.push('/create')"
+        :disabled="user == null">
         <template #icon>
           <NIcon>
             <ArrowUp />
@@ -19,7 +24,10 @@
         </template>
         Get Started
       </NButton>
-      <NButton size="large" secondary type="error" :disabled="user == null">
+      <NButton size="large"
+        secondary
+        type="error"
+        :disabled="user == null">
         <template #icon>
           <NIcon>
             <RemoveIcon />
@@ -35,6 +43,15 @@
         </template>
       </Suspense>
     </div>
+    <div class="footer">
+      <h3>Made with</h3>
+      <div class="❤️">
+        <HeartIcon height="24px"
+          width="24px"
+          color="#eb595c" />
+      </div>
+      <h3>by Brys</h3>
+    </div>
   </div>
 </template>
 
@@ -49,6 +66,7 @@ export default defineComponent({
     ArrowUp: defineAsyncComponent(() => import("@vicons/ionicons5/ArrowUp")),
     NIcon,
     RemoveIcon: defineAsyncComponent(() => import("@vicons/ionicons5/PersonRemoveOutline")),
+    HeartIcon: defineAsyncComponent(() => import('@vicons/ionicons5/Heart')),
     SearchIcon: defineAsyncComponent(() => import("@vicons/ionicons5/Search")),
     LatestCommit: defineAsyncComponent(() => import("./LatestCommit.vue")),
   },
@@ -70,6 +88,7 @@ export default defineComponent({
   align-items: center;
   transition: all 200ms ease;
   height: 600px;
+
   .__title {
     font-size: 64px;
     font-weight: bold;
@@ -95,6 +114,7 @@ export default defineComponent({
     width: 75%;
     animation: bringUp 250ms ease-in-out forwards;
   }
+
   .git-info {
     animation: bringUp 250ms ease-in-out forwards;
   }
@@ -113,7 +133,13 @@ export default defineComponent({
       padding: 6px;
     }
   }
+
+  .neon {
+    animation: none !important;
+    text-shadow: -1px -1px 1px var(--shadow-color-light), -1px 1px 1px var(--shadow-color-light), 1px -1px 1px var(--shadow-color-light), 1px 1px 1px var(--shadow-color-light), 0 0 5px var(--shadow-color-light), 0 0 15px var(--shadow-color-light), 0 0 25px var(--shadow-color-light), 0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color), 0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color), 0 0 210px var(--shadow-color);
+  }
 }
+
 .neon {
   color: white;
   animation: neon 3s infinite ease;
@@ -124,10 +150,25 @@ export default defineComponent({
     opacity: 0;
     transform: translateY(120px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+.footer {
+  margin-top: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #8f8f8f;
+
+  .❤️ {
+    margin-left: 5px;
+    margin-right: 7px;
+    margin-top: 8px;
+  }
+}
 </style>

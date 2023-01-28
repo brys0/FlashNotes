@@ -18,7 +18,14 @@ export interface ICard {
     id: string;
     created_by: string;
 }
-
+export interface ISentenceWithWords {
+    struct: KeyValue<string, string>,
+    words: Map<string, string>
+}
+export interface KeyValue<K, V> {
+    key: K,
+    value: V
+}
 export class Card implements ICard {
     title: string;
     tags: Array<string>;

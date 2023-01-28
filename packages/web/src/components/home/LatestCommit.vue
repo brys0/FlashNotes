@@ -1,5 +1,5 @@
 <template>
-  <div class="latest-commit-card" @click="(!errored) ? openTag() : () => {}">
+  <div class="latest-commit-card" @click="!errored ? openTag() : () => {}">
     <GitBranch color="var(--shadow-color)" class="git-icon" />
     <span class="__gitname" v-if="!errored">{{ commitData.version }}</span>
     <span class="__gitname error" v-else>Something went wrong :/</span>
@@ -28,12 +28,11 @@ export default defineComponent({
         commitData: releaseData as any,
         errored: errored,
       };
-    }
-    catch (e) {
+    } catch (e) {
       return {
         errored: true,
-        commitData: null
-      }
+        commitData: null,
+      };
     }
   },
   methods: {

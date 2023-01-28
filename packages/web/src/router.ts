@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, NavigationGuardNext, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, NavigationGuardNext, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from './stores/AuthStore';
 
 let routes: RouteRecordRaw[] = [
@@ -35,11 +35,18 @@ let routes: RouteRecordRaw[] = [
         component() {
             return import('./pages/card.vue')
         }
+    },
+    {
+        path: '/practice/:id',
+        props: true,
+        component() {
+            return import('./pages/practice.vue');
+        }
     }
 ]
 
 export const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes
 })
 

@@ -105,7 +105,6 @@ export default defineComponent({
   flex-direction: column;
   padding-right: 25px;
   padding-left: 25px;
-
 }
 .__footer {
   display: flex;
