@@ -4,7 +4,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "nuxt preview --hostname '192.168.50.94'",
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
+    "axios": "^1.2.6",
     "nuxt-windicss": "^2.6.0",
     "pinia": "^2.0.29",
     "sass": "^1.57.1"

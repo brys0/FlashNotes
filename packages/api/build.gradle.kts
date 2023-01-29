@@ -26,6 +26,7 @@ dependencies {
     implementation("io.javalin:javalin-bundle:5.3.2")
     implementation("com.google.api-client:google-api-client:2.1.3")
     implementation("io.javalin:javalin-openapi-plugin:5.0.1")
+    implementation("com.auth0:java-jwt:4.2.2")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

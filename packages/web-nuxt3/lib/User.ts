@@ -1,15 +1,31 @@
-import GenericItem from "./Generics";
+import { GenericAny } from "./Generics";
 
-export interface Card extends GenericItem {
-    title: string;
-    tags: string[];
-    words: { [key: string]: string };
-    sentences: { [key: string]: string };
-    id: string;
-    created_by: string;
+export interface User extends GenericAny {
+    name: string;
+    // TODO: Create lessons 
+    lessons: any;
 }
 
 
+export class User implements User {
+    name: string;
+    // TODO: Create lessons 
+    lessons: any;
+    constructor(id?: string, name?: string, lessons?: any) {
+        this.id = id || 'unknown'
+        this.name = name || 'not set';
+        this.lessons = lessons || {};
+    }
+}
+
+
+export class PrivateUser extends User {
+    token: string;
+    constructor(id?: string, token?: string, name?: string, lessons?: any) {
+        super(id, name, lessons);
+        this.token = token || '';
+    }
+}
 /**
  * A card represents a complete study guide, or group. 
  * For now, a card is just representive of learning languages, and vocabulary

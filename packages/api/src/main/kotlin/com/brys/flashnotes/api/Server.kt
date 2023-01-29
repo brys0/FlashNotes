@@ -2,6 +2,7 @@ package com.brys.flashnotes.api
 
 import com.brys.flashnotes.api.controllers.CardGroupController
 import com.brys.flashnotes.api.controllers.VerifyGoogleController
+import com.brys.flashnotes.api.revised.Authentication
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
 import io.javalin.apibuilder.ApiBuilder.post
@@ -11,12 +12,17 @@ import io.javalin.openapi.plugin.OpenApiPlugin
 import io.javalin.plugin.bundled.RouteOverviewPlugin
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
 fun main() {
     val id = System.getenv("GOOGLE_CLIENT_ID")
+    val authentication = Authentication()
+    val token = authentication.createToken(56000)
+    println("JWT: $token")
+    println("Validation: ${authentication.validateToken(token!!)}")
     val port = System.getenv("PORT").toInt()
     val allowlist = System.getenv("ALLOWLIST").split(",")
     val blocklist = System.getenv("BLOCKLIST").split(",")
@@ -35,6 +41,8 @@ fun main() {
     }
     val googleController = VerifyGoogleController(id, cache, snowflake, allowlist, blocklist)
     val cardGroupController = CardGroupController(cache, snowflake, allowlist, blocklist)
+
+
     javalin.routes {
         post("/verify-token", googleController::verifyToken)
         post("/create", cardGroupController::createGroup)
